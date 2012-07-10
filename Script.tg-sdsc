@@ -1,0 +1,12 @@
+#!/bin/csh
+#PBS -q dque
+#PBS -N test_job
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=0:03:00
+#PBS -V
+env
+GsubPostStart.py
+cd /gpfs/ux454321/RunTrackerTest
+if( -e dump ) rm dump
+echo MonkeyBalls > dump
+mpirun -v -machinefile $PBS_NODEFILE -np 1 enzo.exe Turb.64.comp1.li

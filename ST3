@@ -1,0 +1,136 @@
+# Brio & Wu shock tube.  Also Cargo & Gallice.
+
+ProblemType            = 100
+MHD_Verbose	       = 0
+MHD_pout               = 0
+MHD_dump               = 0
+WriteBoundary          = 0
+MHD_WriteFace          = 1
+MHD_WriteDivB          = 0
+MHD_WriteElectric      = 0
+MHD_WriteCentered      = 1
+WriteInThis            = 0
+
+# MHD crap
+MHD_Used               = 1          // MHD On
+
+#0 =ppmde, 1=ppmLR, 2 = Zeus, 3 = MHD Harten 4 = MHD_None
+
+
+#      0 = undefined, 1 = direct averaging, 2 = direct averaging without energy correction,
+#      3 = dt only (Use 2.  The others arent usefull.)
+MHD_CenteringMethod    = 5
+CourantSafetyNumber    = 0.5
+MHD_DivB	       = 0  //0 = none, 1 = Balsara, 2 = Poisson, 3=RJ (use 1)
+MHD_SendFace           = 1  //This should be 1.  If not, bad things man...
+
+# Problem Details
+
+Gamma                  = 1.4
+
+StopCycle = 500 //10000
+StopTime = 0.8
+
+CycleLastDataDump = -10
+CycleSkipDataDump = 10
+
+TopGridRank            = 3
+TopGridDimensions      = 800 2 2
+
+#this breaks, man!
+#DomainRightEdge        = 40 40 40
+
+RightFaceBoundaryCondition = 1 3 3
+LeftFaceBoundaryCondition =  1 3 3
+ProcessorTopology = 8 1 1
+
+#    various init styles:
+#       0 = sphere: 1,2,3=rectangular slice along x, y,z
+#       40,41,42=cylander along x,y,z: 
+#       5,6,7,8 = Index Tests. 5: 10*i + 100*j + 1000*k, 6: i, 7:j, 8k
+HydroMethod       = 4	
+
+
+#More detailed MHD solver parameters:
+#MHD_Recon:  Reconstruction method. Options:
+#            0: Piecewise Linear
+#               (that's it right now)
+#MHD_Riemann: Riemann solver of choice.  Options:
+#             0: Roe style (Harten), simple average for interface. (faster)
+#             1: Roe style (Harten), roe average
+#             2: Roe, cargo galice, ATHENA
+#	      3: only for internal use only
+#             4: first order: F(i+1/2) = F(i)+F(i+1) /2
+#MHD_Eps[4]: Epsilons for Haren method.  Softening parameter for small wave speed.  
+#            For fast, alfven, slow, and contact waves (in that order)
+MHD_Recon   = 0 1
+MHD_Riemann            = 2 2
+MHD_Eps                = 0.2 0.1 0.05 0.05
+
+#                d v b e
+MHD_PLM_Slope =  3 2 3 2
+
+MHD_ReconField = 0 0
+
+MHD_ElectricRecon = 2
+MHD_AthParam      = 0
+
+
+
+
+MHDBlastInitStyle = 1
+
+
+
+# D1 is INSIDE the object.  
+MHDBlastCenter = 0.76 0.5 0.5 //Center in spatial units.
+MHDBlastRadius = 0.25 //in space units OF THE LONGEST AXIS
+
+MHDBlastDA = 1.0
+MHDBlastDB = 0.125
+
+MHDBlastVelocityA = 0 0 0
+MHDBlastVelocityB = 0 0 0
+
+#5/sqrt(4*pi) all 'round.
+MHDBlastBA  =  0.75  1.0 0
+MHDBlastBB  =  0.75 -1.0 0
+
+#MHDBlastGasEnergyA = 6
+#MHDBlastGasEnergyB = 6
+MHDBlastPA = 1.0
+MHDBlastPB = 0.1
+
+
+
+#
+# AMR crap
+#
+
+#Refinement options:
+# 1 = slope, 2=baryon mass, 3=shocks, 4=particle mass, 6=jeans length
+# 7= cooling time, 8=mhd dummy
+
+CellFlaggingMethod     = 8
+NumberOfBufferZones    = 0
+MaximumRefinementLevel    = 0
+MHD_InterpolationMethod = 1 //0 = Direct sample, 1=Average
+MinimumSlopeForRefinement        = 0.3;
+
+FluxCorrection         = 1
+MHD_FluxCorrection     = 0
+
+MHD_ProjectE           =  1
+MHD_ProjectB   = 0
+
+StaticHierarchy           = 0    // dynamic hierarchy
+RefineBy                  = 2    // refinement factor
+
+TopGridGravityBoundary = 0       // Periodic BC
+SelfGravity            = 0       // Gravity on.
+
+# The Defaults!
+#  MinimumSlopeForRefinement        = 0.3;          // 30% change in value
+#  MinimumPressureJumpForRefinement = 0.33;         // As in PPM method paper
+#  MinimumEnergyRatioForRefinement  = 0.1;          // conservative!
+# tiny_number            = 1.0e-6  // fixes velocity slope problem

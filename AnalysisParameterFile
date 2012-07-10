@@ -1,0 +1,50 @@
+PDFAnalysis = 0
+AnalysisBaseName = dataAnalysis
+dtAnalysis = 0.0001
+ProjectionAnalysis             = 1
+
+ProjectionTitle[0] = slice_x .
+ProjectionAxis[0] = 0
+ProjectionLeftEdge[0] = 0 0 0
+ProjectionRightEdge[0] = 1e-6 1 1
+ProjectionFieldList[0] = Density .
+
+
+
+ProjectionTitle[1] = slice_y .
+ProjectionAxis[1] = 1
+ProjectionLeftEdge[1] = 0 0 0
+ProjectionRightEdge[1] = 1 1e-6  1
+ProjectionFieldList[1] = Density .
+
+
+ProjectionTitle[2] = slice_z .
+ProjectionAxis[2] = 2
+ProjectionLeftEdge[2] = 0 0 0
+ProjectionRightEdge[2] =  1 1 1e-6
+ProjectionFieldList[2] = Density .
+
+
+ProjectionTitle[3] = proj_x
+ProjectionAxis[3] = 0
+ProjectionLeftEdge[3] = 0 0 0
+ProjectionRightEdge[3] = 1 1 1
+ProjectionFieldList[3] = Density
+
+
+ProjectionTitle[4] = proj_y
+ProjectionAxis[4] = 1
+ProjectionLeftEdge[4] = 0 0 0
+ProjectionRightEdge[4] = 1 1 1
+ProjectionFieldList[4] = Density
+
+
+ProjectionTitle[5] = projz
+ProjectionAxis[5] = 2
+ProjectionLeftEdge[5] = 0 0 0
+ProjectionRightEdge[5] = 1 1 1
+ProjectionFieldList[5] = Density
+
+
+
+

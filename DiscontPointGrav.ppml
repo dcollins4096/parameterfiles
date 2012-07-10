@@ -1,0 +1,59 @@
+  
+# Generic crap
+
+ProblemType            = 100
+WriteBoundary          = 0
+MidWayDump             = 30 31 39
+
+# MHD crap
+WriteAcceleration =  1
+MHD_Used               = 1
+
+EquationOfState        = 1
+IsothermalSoundSpeed   = 1.0
+
+#Gamma                  = 1.001
+Gamma                  = 1.4       //WRONG
+
+FixedTimestep = 2.2e-4
+StopCycle = 1
+StopTime = 1.0
+
+CycleLastDataDump = -10
+CycleSkipDataDump = 10
+
+
+#TopGridRank            = 3
+#TopGridDimensions      = 16 16 16
+TopGridRank            = 2
+TopGridDimensions      = 256 256
+
+RightFaceBoundaryCondition = 3 3 3
+LeftFaceBoundaryCondition =  3 3 3
+ProcessorTopology = 8 1 1
+
+#    various init styles:
+#       0 = sphere: 1,2,3=rectangular slice along x, y,z
+#       40,41,42=cylander along x,y,z: 
+#       5,6,7,8 = Index Tests. 5: 10*i + 100*j + 1000*k, 6: i, 7:j, 8k
+HydroMethod       = 3
+
+# D1 is INSIDE the object.  
+DiscontCenter = 0.76 0.5 0.5 //Center in spatial units.
+DiscontRadius = 0.26 //in space units OF THE LONGEST AXIS
+
+DiscontDA = 1.0
+DiscontDB = 1.0
+
+DiscontVelocityA = 0.0 0.0 0.0
+DiscontVelocityB = 0.0 0.0 0.0
+
+DiscontBA  = 0.0 0.0 0.0
+DiscontBB  = 0.0 0.0 0.0
+
+DiscontPA  = 1.0
+DiscontPB  = 1.0
+
+PointSourceGravity = 1
+PointSourceGravityConstant = 0.1
+PointSourceGravityPosition = 0.5 0.5 0.5

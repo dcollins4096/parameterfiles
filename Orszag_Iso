@@ -1,0 +1,127 @@
+ 
+# Generic crap
+
+ProblemType            = 103
+MHD_Verbose	       = 0
+MHD_pout               = 0
+MHD_dump               = 0
+WriteBoundary          = 0
+MHD_WriteFace          = 1
+MHD_WriteDivB          = 1
+MHD_WriteElectric      = 1
+MHD_WriteCentered      = 1
+MHD_WriteCurrent       = 0
+
+#WriteInThis           = 30 31 32 33 34 35 36 37 38
+# MHD crap
+MHD_Used               = 1          // MHD On
+
+#0 =ppmde, 1=ppmLR, 2 = Zeus, 3 = MHD Harten 4 = MHD_None
+
+
+#      0 = undefined, 1 = direct averaging, 2 = direct averaging without energy correction,
+#      3 = dt only (Use 2.  The others arent usefull.)
+MHD_CenteringMethod    = 2
+MHD_DivB	       = 1  //0 = none, 1 = Balsara, 2 = Poisson, 3=RJ (use 1)
+MHD_SendFace           = 1  //This should be 1.  If not, bad things man...
+
+CourantSafetyNumber    = 0.5
+
+
+#More detailed MHD solver parameters:
+#MHD_Recon:  Reconstruction method. Options:
+#           -1: if -1 in second spot, only one step is done.
+#            0: Piecewise Constant
+#            1: Picewise linear.
+#MHD_Riemann: Riemann solver of choice.  Options:
+#             0: Roe style (Harten), simple average for interface. (faster)
+#             1: Roe style (Harten), roe average
+#             2: nothing else right now
+#MHD_Eps[4]: Epsilons for Haren method.  Softening parameter for small wave speed.  
+#            For fast, alfven, slow, and contact waves (in that order)
+
+MHD_Recon              = 0 1
+MHD_Riemann            = 11 11
+MHD_Eps                = 0.2 0.1 0.05 0.05
+
+#  MHD_PLM_Slope[d, v, b, e]
+#        1: Constant  (default)
+#        2: Linear, Min Mod
+#        3: Linear, Van Leer
+#           note that the v's should all be the same, the b's should be the same.
+MHD_PLM_Slope = 3 2 3 2
+
+#  Which field to reconstruct: 
+#  MHD_ReconFiled = A B
+#  A is the 'kinetic' variable: 0 = velocity, 1 = momentum
+#  B is the 'internal energy' variable: 0=Total Internal, 1=Gas Pressure, 2=TotalPressure, 3=Enthalpy.
+MHD_ReconField = 0 2
+
+#
+# New electric field reconstruction parameters
+# MHD_ElectricRecon is the reconstruction method.
+# MHD_AthParam is the parameter for the relevant reconstruction method.  
+#
+
+MHD_ElectricRecon   = 0
+MHD_AthParam   = 0.5
+
+
+# Problem Crap
+
+Gamma                  = 1.6667
+
+StopCycle = 10000
+StopTime = 3.0
+dtDataDump = 1.5
+#MHD_FixedTimestep = 6.0e-3
+CycleLastDataDump = -50
+CycleSkipDataDump = 50
+
+TopGridRank            = 2
+TopGridDimensions      = 128 128
+#TopGridDimensions      = 8 8
+
+#this fucks things up!
+#DomainRightEdge        = 40 40 40
+
+RightFaceBoundaryCondition = 3 3 1
+LeftFaceBoundaryCondition =  3 3 1
+#ProcessorTopology = 4 2 2
+
+HydroMethod            = 4
+EquationOfState        = 1
+IsothermalSoundSpeed   = 2
+
+
+#
+# AMR crap
+#
+
+#Refinement options:
+# 1 = slope, 2=baryon mass, 3=shocks, 4=particle mass, 6=jeans length
+# 7= cooling time, 8=mhd dummy
+
+CellFlaggingMethod     = 8
+NumberOfBufferZones    = 0
+MaximumRefinementLevel    = 0
+MHD_InterpolationMethod = 1 //0 = Direct sample, 1=Average
+MinimumSlopeForRefinement        = 0.3;
+
+FluxCorrection         = 1
+MHD_FluxCorrection     = 0
+
+MHD_ProjectE           = 1
+MHD_ProjectB           = 0
+
+StaticHierarchy           = 0    // dynamic hierarchy
+RefineBy                  = 2    // refinement factor
+
+TopGridGravityBoundary = 0       // Periodic BC
+SelfGravity            = 0       // Gravity on.
+
+# The Defaults!
+#  MinimumSlopeForRefinement        = 0.3;          // 30% change in value
+#  MinimumPressureJumpForRefinement = 0.33;         // As in PPM method paper
+#  MinimumEnergyRatioForRefinement  = 0.1;          // conservative!
+# tiny_number            = 1.0e-6  // fixes velocity slope problem

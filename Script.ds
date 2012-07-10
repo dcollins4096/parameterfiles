@@ -1,0 +1,28 @@
+#!/bin/ksh
+# @ account_no = uic221
+# @ job_type = parallel
+# @ environment = COPY_ALL; \
+                  MP_CSS_INTERRUPT=yes; \
+                  MP_INTRDELAY=100; \
+                  MP_PULSE=0; \
+                  MP_CPU_USE=unique; \
+                  MP_ADAPTER_USE=dedicated; \
+                  MP_EUILIB=us; \
+                  MP_EUIDEVICE=sn_single; \
+                  MP_SHARED_MEMORY=yes; \
+                  MP_LABELIO=yes; \
+                  MP_EAGER_LIMIT=65536
+# @ arguments = " "
+# @ output = LL_out.$(jobid)
+# @ error = LL_err.$(jobid)
+# @ executable = /dsgpfs2/ux454321/Run/KH/go
+# @ node = 1
+# @ tasks_per_node = 8
+# @ node_usage = not_shared
+# @ network.mpi = sn_all,not_shared,US,HIGH
+# @ wall_clock_limit = 5:00:00
+# @ class = normal
+# @ queue
+
+
+

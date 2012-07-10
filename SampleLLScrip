@@ -1,0 +1,39 @@
+
+
+      #!/usr/bin/ksh
+
+      #@environment = COPY_ALL;\
+      #AIXTHREAD_COND_DEBUG=OFF;\
+      #AIXTHREAD_MUTEX_DEBUG=OFF;\
+      #AIXTHREAD_RWLOCK_DEBUG=OFF;\
+      #AIXTHREAD_SCOPE=S;\
+      #MP_ADAPTER_USE=dedicated;\
+      #MP_CPU_USE=unique;\
+      #MP_CSS_INTERRUPT=no;\
+      #MP_EAGER_LIMIT=65536;\
+      #MP_EUIDEVELOP=min;\
+      #MP_EUIDEVICE=sn_single;\
+      #MP_EUILIB=us;\
+      #MP_POLLING_INTERVAL=100000;\
+      #MP_PULSE=0;\
+      #MP_SHARED_MEMORY=yes;\
+      #MP_SINGLE_THREAD=yes;\
+      #RT_GRQ=ON;\
+      #SPINLOOPTIME=0;\
+      #YIELDLOOPTIME=0
+
+      #@ wall_clock_limit = 04:00:00
+      #@class = normal
+      #@node_usage = not_shared
+      #@node = n
+      #@tasks_per_node = 8
+      #@job_type = parallel
+      #@network.MPI = sn_single,not_shared,US,HIGH
+      #@notification = never
+      #@job_name= job.&(jobid)
+      #@output = LL_out.$(jobid)
+      #@error = LL_err.$(jobid)
+      #@initialdir = /gpfs/your_user_name
+      #@queue
+
+      poe executable args

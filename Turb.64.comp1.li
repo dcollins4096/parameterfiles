@@ -1,0 +1,132 @@
+# PPML version.
+# UNIGRID PROBLEM DEFINITION FILE: Isothermal Mach 6 Turbulence Simulation
+#
+#  define problem
+#
+ProblemType                    = 60      // turbulence simulation
+TopGridRank                    = 3
+TopGridDimensions              = 64 64 64
+DomainRightEdge                = 1 1 1
+#
+SelfGravity                    = 0       // gravity on
+GravitationalConstant          = 1
+GravityResolution              = 1
+BaryonSelfGravityApproximation = 0
+TopGridGravityBoundary         = 0       // 0 - periodic for gravity (all dims)
+#
+LeftFaceBoundaryCondition      = 3 3 3   // 3 - periodic for hydro
+RightFaceBoundaryCondition     = 3 3 3
+#
+#  problem parameters
+#
+TurbulenceSimulationGridLeftEdge[0]      = 0 0 0
+TurbulenceSimulationGridRightEdge[0]     = 1 1 1
+#TurbulenceSimulationVelocity1Name        = PPML_64_VX.h5
+#TurbulenceSimulationVelocity2Name        = PPML_64_VY.h5
+#TurbulenceSimulationVelocity3Name        = PPML_64_VZ.h5
+TurbulenceSimulationNumberOfInitialGrids = 1
+TurbulenceSimulationInitialTemperature   = 1.0  // sound speed, actually
+TurbulenceSimulationInitialDensity       = 1.0
+TurbulenceSimulationInitialMagneticField = 0.0 0.0 1.414213
+
+RandomForcing                            = 1    
+RandomForcingMachNumber                  = 10.0
+#
+#  set I/O and stop/start parameters
+#
+StopCycle               = 50000
+#dtDataDump              = 0.1
+StopTime                = 0.3
+#DataDumpName            = ts_256L0_M6H5_
+CycleSkipGlobalDataDump = -100
+CycleSkipDataDump       = 100
+ParallelRootGridIO = 0
+
+PPML_SlopeLimieter = 0 1 1
+#
+#  set hydro parameters
+#
+
+Gamma                  = 1.001
+PPMFlatteningParameter = 3	
+PPMDiffusionParameter  = 1	
+InterpolationMethod    = 1       // SecondOrderA
+CourantSafetyNumber    = 0.2
+FluxCorrection         = 1
+huge_number            = 1e+6
+tiny_number            = 1e-6
+#
+#  set grid refinement parameters
+#
+StaticHierarchy           = 0         // dynamic hierarchy
+MaximumRefinementLevel    = 0         // use up to 7 levels
+RefineBy = 2         // refinement factor
+CellFlaggingMethod        = 3         // shocks 3, Jeans 6, slope 1
+MinimumEfficiency         = 0.35      // fraction efficiency
+MinimumSlopeForRefinement = 0.33
+MinimumShearForRefinement = 6.0
+MinimumPressureJumpForRefinement = 3.0
+RefineRegionLeftEdge      = 0 0 0
+RefineRegionRightEdge     = 1 1 1
+
+HydroMethod            = 6
+
+#
+# New parameters:
+#
+
+#EquationOfState        = 1
+#IsothermalSoundSpeed   = 1.0
+
+MHD_DivB     = 1
+WriteBoundary          = 0
+#MidWayDump             = 30 31 32 33 34
+MHD_Used               = 1
+#PPML_InitInterfaceMethod = 2
+# //0: nothing, 1: constant, 2: linear
+# MHD_FixedTimestep = 1e-3
+#
+# New parameters, added Feb 3, 2006
+# Improved all of those, added new: Aug 9 2006
+#
+
+#More detailed MHD solver parameters:
+#MHD_Recon:  Reconstruction method. Options:
+#           -1: if -1 in second spot, only one step is done.
+#            0: Piecewise Constant
+#            1: Picewise linear.
+#MHD_Riemann: Riemann solver of choice.  Options:
+#             0: Roe style (Harten), simple average for interface. (faster)
+#             1: Roe style (Harten), roe average
+#             2: nothing else right now
+#MHD_Eps[4]: Epsilons for Haren method.  Softening parameter for small wave speed.  
+#            For fast, alfven, slow, and contact waves (in that order)
+#MHD_Recon              = 1 1
+#MHD_Riemann            = 11 11
+#MHD_Eps                = 0.2 0.1 0.05 0.05
+
+#  MHD_PLM_Slope[d, v, b, e]
+#        1: Constant  (default)
+#        2: Linear, Min Mod
+#        3: Linear, Van Leer
+#           note that the v's should all be the same, the b's should be the same.
+MHD_PLM_Slope = 3 2 3 2
+
+#  Which field to reconstruct: 
+#  MHD_ReconFiled = A B
+#  A is the 'kinetic' variable: 0 = velocity, 1 = momentum
+#  B is the 'internal energy' variable: 0=Total Internal, 1=Gas Pressure, 2=TotalPressure, 3=Enthalpy.
+#MHD_ReconField = 0 2
+
+#
+# New electric field reconstruction parameters
+# MHD_ElectricRecon is the reconstruction method.
+# MHD_AthParam is the parameter for the relevant reconstruction method.  
+#
+
+#MHD_ElectricRecon   = 2
+#MHD_AthParam   = 0.5
+
+#MHD_Flattening = 0
+#MHD_DiffusionMethod = 7 7
+#MHD_DiffusionParameter = 0.1

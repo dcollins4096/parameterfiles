@@ -1,0 +1,114 @@
+#ALA Dai and Woodward (94, I think), RJ 95 (fig 2a) 
+#Waves are (left to right):
+#Fast Shock, Rotational, Slow Shock, Contact, Slow Shock, Rotational, Fast Shock.
+#dcc: 01/11/05 check the order or Rotational vs Slow Shock.
+
+# Generic crap
+
+ProblemType            = 100
+MHD_Verbose	       = 0
+MHD_pout               = 0
+MHD_dump               = 0
+WriteBoundary          = 0
+MHD_WriteFace          = 1
+MHD_WriteDivB          = 1
+MHD_WriteElectric      = 1
+MHD_WriteCentered      = 1
+WriteInThis            = 0
+
+# MHD crap
+MHD_Used               = 1          // MHD On
+
+#0 =ppmde, 1=ppmLR, 2 = Zeus, 3 = MHD Harten 4 = MHD_None
+
+
+#      0 = undefined, 1 = direct averaging, 2 = direct averaging without energy correction,
+#      3 = dt only (Use 2.  The others arent usefull.)
+MHD_CenteringMethod    = 2
+CourantSafetyNumber    = 0.5
+MHD_DivB	       = 1  //0 = none, 1 = Balsara, 2 = Poisson, 3=RJ (use 1)
+MHD_SendFace           = 1  //This should be 1.  If not, bad things man...
+
+# Problem Details
+
+Gamma                  = 1.666
+#Gamma                  = 1.4       //WRONG
+
+StopCycle = 10000
+StopTime = 0.2
+
+CycleLastDataDump = -50
+CycleSkipDataDump = 50
+
+
+TopGridRank            = 3
+TopGridDimensions      = 512 2 2
+
+#this breaks, man!
+#DomainRightEdge        = 40 40 40
+
+RightFaceBoundaryCondition = 1 3 3
+LeftFaceBoundaryCondition =  1 3 3
+ProcessorTopology = 8 1 1
+
+#    various init styles:
+#       0 = sphere: 1,2,3=rectangular slice along x, y,z
+#       40,41,42=cylander along x,y,z: 
+#       5,6,7,8 = Index Tests. 5: 10*i + 100*j + 1000*k, 6: i, 7:j, 8k
+HydroMethod       = 3	
+MHDBlastInitStyle = 1
+
+MHD_Recon         = 0 // To be foreward looking, this is here but does nothing.
+MHD_Riemann       = 1 // 0 for simple average, 1 for Roe average
+MHD_Eps                = 0.2 0.1 0.05 0.05
+
+# D1 is INSIDE the object.  
+MHDBlastCenter = 0.76 0.5 0.5 //Center in spatial units.
+MHDBlastRadius = 0.26 //in space units OF THE LONGEST AXIS
+
+MHDBlastDA = 1.08
+MHDBlastDB = 1.0
+
+MHDBlastVelocityA = 1.2 0.01 0.5
+MHDBlastVelocityB = 0 0 0
+
+#[2, 3.6, 2] /sqrt(4*pi)
+#[2, 4.0, 2]/sqrt(4*pi)
+MHDBlastBA  = 0.56418958354775628 1.0155412503859613 0.56418958354775628
+MHDBlastBB  = 0.56418958354775628 1.1283791670955126 0.56418958354775628
+
+MHDBlastPA = 0.95
+MHDBlastPB = 1.0
+
+
+#
+# AMR crap
+#
+
+#Refinement options:
+# 1 = slope, 2=baryon mass, 3=shocks, 4=particle mass, 6=jeans length
+# 7= cooling time, 8=mhd dummy
+
+CellFlaggingMethod     = 8
+NumberOfBufferZones    = 0
+MaximumRefinementLevel    = 0
+MHD_InterpolationMethod = 1 //0 = Direct sample, 1=Average
+MinimumSlopeForRefinement        = 0.3;
+
+FluxCorrection         = 1
+MHD_FluxCorrection     = 0
+
+MHD_ProjectE           =  1
+MHD_ProjectB   = 0
+
+StaticHierarchy           = 0    // dynamic hierarchy
+RefineBy                  = 2    // refinement factor
+
+TopGridGravityBoundary = 0       // Periodic BC
+SelfGravity            = 0       // Gravity on.
+
+# The Defaults!
+#  MinimumSlopeForRefinement        = 0.3;          // 30% change in value
+#  MinimumPressureJumpForRefinement = 0.33;         // As in PPM method paper
+#  MinimumEnergyRatioForRefinement  = 0.1;          // conservative!
+# tiny_number            = 1.0e-6  // fixes velocity slope problem

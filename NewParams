@@ -1,0 +1,45 @@
+#
+# New parameters, added Feb 3, 2006
+# Improved all of those, added new: Aug 9 2006
+#
+
+#More detailed MHD solver parameters:
+#MHD_Recon:  Reconstruction method. Options:
+#           -1: if -1 in second spot, only one step is done.
+#            0: Piecewise Constant
+#            1: Picewise linear.
+#MHD_Riemann: Riemann solver of choice.  Options:
+#             0: Roe style (Harten), simple average for interface. (faster)
+#             1: Roe style (Harten), roe average
+#             2: nothing else right now
+#MHD_Eps[4]: Epsilons for Haren method.  Softening parameter for small wave speed.  
+#            For fast, alfven, slow, and contact waves (in that order)
+MHD_Recon              = 0 1
+MHD_Riemann            = 2 2
+MHD_Eps                = 0.2 0.1 0.05 0.05
+
+#  MHD_PLM_Slope[d, v, b, e]
+#        1: Constant  (default)
+#        2: Linear, Min Mod
+#        3: Linear, Van Leer
+#           note that the v's should all be the same, the b's should be the same.
+MHD_PLM_Slope = 3 2 3 2
+
+#  Which field to reconstruct: 
+#  MHD_ReconFiled = A B
+#  A is the 'kinetic' variable: 0 = velocity, 1 = momentum
+#  B is the 'internal energy' variable: 0=Total Internal, 1=Gas Pressure, 2=TotalPressure, 3=Enthalpy.
+MHD_ReconField = 0 2
+
+#
+# New electric field reconstruction parameters
+# MHD_ElectricRecon is the reconstruction method.
+# MHD_AthParam is the parameter for the relevant reconstruction method.  
+#
+
+MHD_ElectricRecon   = 1
+MHD_AthParam   = 0.5
+
+MHD_Flattening = 0
+MHD_DiffusionMethod = 0 1
+MHD_DiffusionParameter = 0.2

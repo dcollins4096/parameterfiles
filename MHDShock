@@ -1,0 +1,44 @@
+ProblemType            = 102
+MHD_Verbose	       = 1
+MHD_pout               = 0
+MHD_dump               = 0
+WriteBoundary          = 1
+MHD_WriteFace          = 1
+MHD_WriteCentered      = 1
+MHD_WriteDivB          = 1
+MHD_WriteElectric      = 0
+WriteInThis            = 0
+
+MHD_Used               = 1          // MHD On
+HydroMethod            = 3   //0 = Enzo Direct, 1 = Euler Lagrange, 2 = Zeus, 3 = MHD Harten
+MHD_CenteringMethod    = 2   //0 = undefined, 1 = direct averaging, 2 = not defined yet.
+MHD_DivB	       = 1  //0 = none, 1 = Balsara
+ShockTubeDirection     = 1
+
+TopGridRank            = 3
+TopGridDimensions      = 256 2 2 
+RightFaceBoundaryCondition = 3 3 3
+LeftFaceBoundaryCondition = 3 3 3
+
+StopCycle = 2
+StopTime = 0.1
+CycleLastDataDump = -1
+CycleSkipDataDump = 1
+
+Gamma                  = 1.4
+CourantSafetyNumber    = 0.5
+PPMDiffusionParameter  = 0       // diffusion off
+PPMFlatteningParameter = 0       // flattening on
+PPMSteepeningParameter = 0       // steepening on
+
+TopGridGravityBoundary = 0       // Periodic BC
+SelfGravity            = 0       // Gravity on.
+SubgridsAreStatic         = 1    //1 means no refinement.
+StaticHierarchy           = 1    // dynamic hierarchy
+RefineBy                  = 2    // refinement factor
+
+MaximumRefinementLevel    = 0
+MaximumGravityRefinementLevel = 0
+#MinimumOverDensityForRefinement = 0.1
+#ConservativeInterpolation       = 0
+tiny_number            = 1.0e-6  // fixes velocity slope problem

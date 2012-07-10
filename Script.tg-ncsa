@@ -1,0 +1,24 @@
+#!/bin/csh
+#
+#PBS -l walltime=00:10:00
+#PBS -l nodes=1:ppn=1
+#
+# export all my environment variables to the job
+#PBS -V
+#
+# job name (default = name of script file)
+###PBS -N Job
+
+###PBS -m be
+###PBS -M dcollins@physics.ucsd.edu
+
+set Dir = /gpfs_scratch1/dcollins/BatchScriptTest/
+set job = "$Dir"go.enzo
+cd $Dir
+
+set NP=`wc -l $PBS_NODEFILE | cut -d'/' -f1`   # calculate NP for mpirun line 
+set JOBID=`echo $PBS_JOBID | cut -d'.' -f1`    # store just number portion of full job id
+echo "Hey, Mother Fucker!"
+pwd
+mpirun -machinefile $PBS_NODEFILE -np $NP $job
+

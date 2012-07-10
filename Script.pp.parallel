@@ -1,0 +1,8 @@
+#!/bin/csh
+#PBS -N cpi_parallel
+#PBS -j oe
+cd /mnt/data/users/dcollins/MGC_smaller/Restart
+pwd
+/opt/mpich/gnu/bin/mpirun -machinefile ./machinefile -np 9 enzo.exe -r data0682
+
+#end

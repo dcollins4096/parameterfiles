@@ -1,0 +1,168 @@
+#
+# 2d blast wave from Balsara & Spicer 1999
+# 
+# Generic crap
+ParallelRootGridIO     = 0
+ProblemType            = 100
+MHD_Verbose	       = 1
+MHD_pout               = 1
+MHD_dump               = 0
+WriteBoundary          = 0
+MHD_WriteDivB          = 1
+MHD_WriteFace          = 1
+MHD_WriteElectric      = 0
+MHD_WriteCentered      = 1
+MHD_WriteCurrent       = 0
+MHD_WriteAcceleration  = 0
+WriteInThis            = 30 39
+MHD_Hack2d             = 1
+
+# MHD crap
+MHD_Used               = 1          // MHD On
+
+#0 =ppmde, 1=ppmLR, 2 = Zeus, 3 = MHD Harten 4 = MHD_None
+
+
+#      0 = undefined, 1 = direct averaging, 2 = direct averaging without energy correction,
+#      3 = volumetric interpolation, 4 = dt only (Use 2.  The others arent usefull.)
+
+MHD_CenteringMethod    = 3
+CourantSafetyNumber    = 0.5
+MHD_DivB	       = 1  //0 = none, 1 = Balsara, 2 = Poisson, 3=RJ (use 1)
+MHD_SendFace           = 1  //This should be 1.  If not, bad things man...
+
+# Problem Crap
+
+Gamma                  = 1.4
+
+CellFlaggingMethod     = 3 1
+MaximumRefinementLevel = 2
+
+MinimumSlopeForRefinement = 1
+
+MinimumPressureJumpForRefinement = 3
+MinimumEnergyRatioForRefinement  = 0.01
+HydroMethod            = 4
+
+StopCycle = 1000
+StopTime = 0.01
+
+CycleLastDataDump = -1
+CycleSkipDataDump = 1
+
+TopGridRank            = 2
+
+#The paper uses 200.  Trying to make things go faster, though.
+TopGridDimensions      = 200 200 
+#TopGridDimensions      = 50 50 2
+
+RightFaceBoundaryCondition = 3 3 3
+LeftFaceBoundaryCondition =  3 3 3
+ProcessorTopology = 2 2 1
+
+#    various init styles:
+#       0 = sphere: 1,2,3=rectangular slice along x, y,z
+#       40,41,42=cylander along x,y,z: 
+#       5,6,7,8 = Index Tests: 10*i + 100*j + 1000*k, i,j,k
+
+MHDBlastInitStyle = 42
+MHDBlastCenter = 0.5 0.5 0.7 //Center in spatial units.
+MHDBlastRadius = 0.1 //0.2 //in space units OF THE LONGEST AXIS
+
+MHDBlastDA = 1
+MHDBlastDB = 1
+
+MHDBlastVelocityA = 0 0 0
+MHDBlastVelocityB = 0 0 0
+
+MHDBlastBA  = 100.0 0.0 0.0 
+MHDBlastBB  = 100.0 0.0 0.0
+
+#if gas energy isn't defined, pressure is read and gass energy is calculated from that.
+
+#MHDBlastGasEnergyA = 3.0
+#MHDBlastGasEnergyB = 6.0
+
+#in the paper, he uses a value of 0.1 for ambient pressure.
+#This gives a plasma beta of 1e-5, which the current Enzo solver can't handle.
+#6 is about the smallest it can handle without generating negative pressure.
+#MHDBlastPA = 0.1
+MHDBlastPA = 6
+MHDBlastPB = 1000
+
+#
+# AMR crap
+#
+
+#Refinement options:
+# 1 = slope, 2=baryon mass, 3=shocks, 4=particle mass, 6=jeans length
+# 7= cooling time, 8=mhd dummy
+
+
+NumberOfBufferZones    = 2
+MHD_InterpolationMethod = 1 //0 = Direct sample, 1=Average
+MinimumSlopeForRefinement        = 0.3;
+
+FluxCorrection         = 1
+MHD_FluxCorrection     = 0
+
+MHD_ProjectE   =  1
+MHD_ProjectB   = 0
+
+StaticHierarchy           = 0    // dynamic hierarchy
+RefineBy                  = 2    // refinement factor
+
+TopGridGravityBoundary = 0       // Periodic BC
+SelfGravity            = 0       // Gravity on.
+
+# The Defaults!
+#  MinimumSlopeForRefinement        = 0.3;          // 30% change in value
+#  MinimumPressureJumpForRefinement = 0.33;         // As in PPM method paper
+#  MinimumEnergyRatioForRefinement  = 0.1;          // conservative!
+# tiny_number            = 1.0e-6  // fixes velocity slope problem
+#
+# New parameters, added Feb 3, 2006
+# Improved all of those, added new: Aug 9 2006
+#
+
+#More detailed MHD solver parameters:
+#MHD_Recon:  Reconstruction method. Options:
+#           -1: if -1 in second spot, only one step is done.
+#            0: Piecewise Constant
+#            1: Picewise linear.
+#MHD_Riemann: Riemann solver of choice.  Options:
+#             0: Roe style (Harten), simple average for interface. (faster)
+#             1: Roe style (Harten), roe average
+#             2: nothing else right now
+#MHD_Eps[4]: Epsilons for Haren method.  Softening parameter for small wave speed.  
+#            For fast, alfven, slow, and contact waves (in that order)
+MHD_Recon              = 0 1
+MHD_Riemann            = 6 6
+MHD_Eps                = 0.2 0.1 0.05 0.05
+
+#  MHD_PLM_Slope[d, v, b, e]
+#        1: Constant  (default)
+#        2: Linear, Min Mod
+#        3: Linear, Van Leer
+#           note that the v's should all be the same, the b's should be the same.
+MHD_PLM_Slope = 3 2 3 2
+
+#  Which field to reconstruct: 
+#  MHD_ReconFiled = A B
+#  A is the 'kinetic' variable: 0 = velocity, 1 = momentum
+#  B is the 'internal energy' variable: 0=Total Internal, 1=Gas Pressure, 2=TotalPressure, 3=Enthalpy.
+MHD_ReconField = 0 2
+
+#
+# New electric field reconstruction parameters
+# MHD_ElectricRecon is the reconstruction method.
+# MHD_AthParam is the parameter for the relevant reconstruction method.  
+#
+
+MHD_ElectricRecon   = 0
+MHD_AthParam   = 0.5
+
+MHD_Flattening = 0
+MHD_DiffusionMethod = 0 1
+MHD_DiffusionParameter = 0.2
+GlobalStatsCycleSkip     = 1

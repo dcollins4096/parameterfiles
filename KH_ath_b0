@@ -1,0 +1,180 @@
+
+#Physics Controll:
+
+Gamma                  = 1.4
+CourantSafetyNumber    = 0.5 
+
+HydroMethod            = 4
+# Choices for hydro method:  
+# 0 =ppmde, 1=ppmLR, 2 = Zeus, 3 = MHD Harten 4 = MHD_None
+# You want 3 for MHD runs.
+
+#More detailed MHD solver parameters:
+#MHD_Recon:  Reconstruction method. Options:
+#            0: Piecewise Linear
+#               (that's it right now)
+#MHD_Riemann: Riemann solver of choice.  Options:
+#             0: Roe style (Harten), simple average for interface. (faster)
+#             1: Roe style (Harten), roe average
+#             2: nothing else right now
+#MHD_Eps[4]: Epsilons for Haren method.  Softening parameter for small wave speed.  
+#            For fast, alfven, slow, and contact waves (in that order)
+MHD_Recon              = 0 1
+MHD_Riemann            = 2 2
+MHD_Eps                = 0.2 0.1 0.05 0.05
+
+#                d v b e
+MHD_PLM_Slope =  3 2 3 2
+MHD_ReconField = 0 0
+
+# Problem Controll
+
+ProblemType            = 100 
+
+StopCycle = 2000
+StopTime = 5.0
+
+
+CycleLastDataDump = -5
+CycleSkipDataDump = 5
+
+TopGridRank            = 2
+TopGridDimensions      = 256 256
+#MHD_Hack2d             = 1
+
+#this fucks things up.  Debug if you're going to use it.!
+#DomainRightEdge        = 40 40 40
+
+# 0 = Reflecting, 1=Outflow, 2= um.... 3=Periodic
+RightFaceBoundaryCondition = 3 3 3
+LeftFaceBoundaryCondition =  3 3 3
+
+ProcessorTopology = 2 2 1
+#   This allows you to override the Enzo native processor distribution.
+
+#
+# Blast Wave Controll
+#
+
+MHDBlastInitStyle     = 2
+#                       various init geometries.
+#                       0 = sphere: 1,2,3=rectangular slice along x, y,z
+#                       40,41,42=cylander along x,y,z: 
+#                       5,6,7,8 = Index Tests: 10*i + 100*j + 1000*k, i,j,k (Debugging)
+
+
+MHDBlastPerturbMethod = 2
+#                       1: vx = vy = A*Random Number
+#                       2: vx = vy = A*Random, independant of Z
+#                       3: vx = vy = A*Random, independant of Z, wavelength 
+#                          determined by MHDBlastPerturbWavelength
+#                   4,5,6: Vx = vy = sin( 2pi X / Wavelength) 
+MHDBlastPerturbAmplitude   = 0.1 # Pert Amplitude for the above
+MHDBlastPerturbWavelength = 0 1
+MHDBlastCenter = 0.5 0.5 0.5 //Center in spatial units.
+MHDBlastRadius = 0.25        #in space units OF THE LONGEST AXIS
+#                             For standard shock problem, make center=0.75, rad=0.25
+
+#0(A) is the outside, 1(B) is the inside. 
+#Double check for yourself, though, before you run.
+
+MHDBlastDA = 1
+MHDBlastDB = 2
+
+MHDBlastVelocityA = -0.5 0 0
+MHDBlastVelocityB = 0.5 0 0
+
+MHDBlastBA  = 0.0 0.0 0.0
+MHDBlastBB  = 0.0 0.0 0.0
+
+#Only define ONE of these.  Don't confuse the code.
+# MHD currently uses TOTAL ENERGY DENSITY.  So E = p/(gamma-1)+1/2 Rho V^2 + 1/2 B^2
+# If you define MHDBlastTotalEnergy, DON'T FORGET THE MAGNETIC ENERGY AND KINETIC.
+# GasEnergy=p/(g-1)  Note that this is DIFFERENT from ppm.
+
+#MHDBlastGasEnergyA = 3.0
+#MHDBlastGasEnergyB = 6.0
+
+MHDBlastPA = 2.5
+MHDBlastPB = 2.5
+
+#MHDBlastTotalEnergy0
+#MHDBlastTotalEnergy1
+
+#
+# AMR crap
+#
+
+#Refinement options:
+# 1 = slope, 2=baryon mass, 3=shocks, 4=particle mass, 6=jeans length
+# 7= cooling time, 8=mhd dummy (just for debugging right now.)
+
+CellFlaggingMethod     = 9
+NumberOfBufferZones    = 2
+MaximumRefinementLevel    = 0
+MHD_InterpolationMethod = 1 //I don't think this does anything right now.
+MinimumSlopeForRefinement        = 0.3
+MinimumShearForRefinement = 0.5
+FluxCorrection         = 1
+MHD_FluxCorrection     = 0 // LEAVE THIS OFF.  It is taken care of in another way.
+
+MHD_ProjectE           = 1 // LEAVE THIS ON.  This is where the flux correction is done.
+MHD_ProjectB   = 0
+
+StaticHierarchy           = 0    // dynamic hierarchy
+RefineBy                  = 2    // refinement factor
+
+TopGridGravityBoundary = 0       // Periodic BC
+SelfGravity            = 0       // LEAVE OFF WITH MHD for now.
+
+# The Defaults!
+#  MinimumSlopeForRefinement        = 0.3;          // 30% change in value
+#  MinimumPressureJumpForRefinement = 0.33;         // As in PPM method paper
+#  MinimumEnergyRatioForRefinement  = 0.1;          // conservative!
+# tiny_number            = 1.0e-6  // fixes velocity slope problem
+
+
+ 
+#MHD debug crap.  Leave it all off unless you're looking for bugs.
+
+MHD_pout               = 0 #controlls parallel debug flags to be written into files
+#                           called file.n, where n is the proc number.
+
+MHD_Verbose	       = 0 #Controls level of verbosity in Pout files
+
+MHD_dump               = 0 #Controls a horrible ascii dumpfile thing.  Not used, but not yet
+#                           removed completely.
+
+WriteBoundary          = 0 #Causes WriteGridHDF5 to write ghost zones for all fields.
+
+WriteInThis            = 0 #Causes WriteGrid to be called in about 2 dozen places.
+#                            DO NOT use on big, long, or many (>2) processor jobs
+#                            unless you're prepared to sort through a bunch of crap.
+
+MHD_WriteDivB          = 0 #Outputs and checks DivB.  You probably want this on, just to be sure.
+                          
+MHD_WriteElectric      = 0 #Output electric field.
+MHD_WriteCentered      = 1 #Output electric field.
+MHD_WriteElectric      = 0 #Output electric field.
+
+
+# General MHD stuff:
+
+MHD_Used               = 1 # Leave this 1 if its an MHD run. 
+MHD_CenteringMethod    = 2 # Leave this 2 for now.  Otheres don't work.
+#                            Controlls how the Cell Centered Magnetic field is gotten from 
+#                            the Face Centered field.  Only direct averaging is imposed right now
+#                            i.e. Bxc(i,j,k)=(Bxf(i+1/2,j,k)+Bxf(i-1/2,j,k))/2
+#                            For completeness: 0 is undefined; 
+#                            1 corrects the Total Energy (which doesn't work) 
+#                            2 is above
+#                            3 is a hack that treats Bxf as d(Bxf)/dt (doens't work with AMR)
+    
+MHD_DivB	       = 0  # 0 = none (bad), 
+#		  	     1 = Balsara (use this, its the only one that works), 
+#	                     2 = Poisson (not yet implemented, but the hook is there)
+#                             3 = RJ (Same as balsara, slightly different formulation.)
+#                                    Untrustworthy 
+
+MHD_SendFace           = 1  #This should be 1.  If not, bad things man...
+

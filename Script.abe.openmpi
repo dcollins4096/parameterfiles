@@ -1,0 +1,31 @@
+#!/bin/csh
+#
+#PBS -l walltime=45:10:00
+#PBS -l nodes=8:ppn=8
+#
+# export all my environment variables to the job
+#PBS -V
+#
+# job name (default = name of script file)
+###PBS -N Job
+
+###PBS -m be
+###PBS -M dcollins@physics.ucsd.edu
+
+set Dir = /u/ac/dcollins/scratch-global/ppml_64_m10b1rB/
+set job = "$Dir"go.enzo
+cd $Dir
+
+set NP=`wc -l $PBS_NODEFILE | cut -d'/' -f1`   # calculate NP for mpirun line 
+set JOBID=`echo $PBS_JOBID | cut -d'.' -f1`    # store just number portion of full job id
+
+echo Launch.
+which mpirun
+pwd
+which enzo.exe
+which go.enzo
+echo "job is" $job
+echo "node file" $PBS_NODEFILE
+
+/usr/local/ofed-1.2/mpi/intel/openmpi-1.2.2-1/bin/mpirun -machinefile $PBS_NODEFILE -np $NP $job
+

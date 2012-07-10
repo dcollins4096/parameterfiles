@@ -1,0 +1,80 @@
+#
+# PROBLEM DEFINITION FILE: Sedov Blast (unigrid version)
+#
+#  A 3D MHD explosion test problem.
+#
+#
+#  problem setup
+#
+ProblemType               =  7       // Sedov blast wave
+Gamma                     =  1.4
+SedovBlastEnergy          =  0.0025
+SedovBlastMHDField        =  0.01 0.01 0.01
+
+#
+#  grid setup
+#
+TopGridRank               = 3
+TopGridDimensions         = 50 50 50
+SedovBlastSubgridLeft     = 0.4
+SedovBlastSubgridRight    = 0.6
+
+#
+#  set I/O and stop/start parameters
+#
+StopTime                  = 1.5
+StopCycle                 = 1000   // was once 10000 for 2d.
+#dtDataDump                = 0.1
+DataDumpName              = data
+CycleSkipDataDump         = 1
+#
+#  set hydro/mhd parameters
+#
+
+MHD_Verbose	       = 0
+MHD_pout               = 0
+MHD_dump               = 0
+WriteBoundary          = 0
+MHD_WriteFace          = 1
+MHD_WriteDivB          = 1
+MHD_WriteElectric      = 0
+MHD_WriteCentered      = 1
+MHD_WriteCurrent       = 1
+WriteInThis            = 0
+
+
+MHD_WriteFace          = 1
+MHD_WriteDivB          = 1
+MHD_WriteElectric      = 1
+WriteInThis            = 0
+
+
+MHD_CenteringMethod    = 2
+MHD_Courant            = 0.5
+MHD_DivB	       = 1  //0 = none, 1 = Balsara, 2 = Poisson, 3=RJ (use 1)
+MHD_SendFace           = 1  //This should be 1.  If not, bad things man...
+
+MHD_Used                  = 1
+HydroMethod               = 3
+
+PPMDiffusionParameter     = 1       
+PPMFlatteningParameter    = 3
+PPMSteepeningParameter    = 1
+CourantSafetyNumber       = 0.8     // ppm - 0.8; zeus - 0.5
+
+
+#
+#  set grid refinement parameters
+#
+StaticHierarchy           = 0       // dynamic hierarchy
+MaximumRefinementLevel    = 2       // use up to 0 levels
+CellFlaggingMethod        = 1       // by slope in density and total energy
+MinimumSlopeForRefinement = 0.4
+NumberOfBufferZones       = 2
+RefineBy                  = 2
+MinimumEfficiency         = 0.8     // good value for 2D
+
+#
+#  set some global parameters
+#
+tiny_number               = 1.0e-7

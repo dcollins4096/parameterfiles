@@ -1,0 +1,21 @@
+#!/bin/tcsh
+###$ -A A-rfUser9
+#$ -V
+#$ -cwd
+#$ -o out.$JOB_ID
+#$ -e err.$JOB_ID
+#$ -pe 16way 512
+#$ -q normal
+#$ -l h_rt=00:6:00
+#$ -m be
+#$ -M sskory@physics.ucsd.edu
+#$ -N particlegen
+
+set echo
+setenv MY_NSLOTS 512
+cd /scratch/00649/tg457850/RD0036
+ibrun ./particlegen.exe -d -Z -b 0.0,0.0,0.0 -e 1.0,1.0,1.0 RD0036
+
+
+#end
+
