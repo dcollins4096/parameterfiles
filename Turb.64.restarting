@@ -1,0 +1,82 @@
+#
+# For driven turbulence simulations.
+# Simple Maclow 1998 driving, fixed solenoidal pattern
+#
+
+# 
+# Major Parameters
+#
+#
+TopGridDimensions                        = 64 64 64
+TurbulenceSimulationInitialMagneticField = 0.0 0.0 18  //E=B^2/2, no sqrt(4pi)
+RandomForcingMachNumber                  = 9
+UseDrivingField                          = 1           //1 for driving, 0 for decaying
+
+EquationOfState         = 1       //1 is exactly isothermal. 0 is adiabatic
+#Gamma                  = 1.666   //Only for Adiabatic
+IsothermalSoundSpeed    = 1.0     //Only for Isothermal
+TurbulenceSimulationInitialTemperature   = 1.0         // sound speed, actually, only for initialization
+TurbulenceSimulationInitialDensity       = 1.0
+
+#
+#  set I/O and stop/start parameters
+#
+StopCycle               = 20000
+dtDataDump              = 0.0166
+StopTime                = 1.66
+#CycleSkipRestartDump    = 100
+#CycleLastRestartDump    = 10000
+#DataDumpName            = ts_256L0_M6H5_
+#CycleSkipDataDump       = 100
+ParallelRootGridIO      = 1    //makes output faster, leave it on.
+BAnyl                   = 0    //Outputs DivB in the output files.
+
+#
+# Hydro solver parameters
+#
+HydroMethod            = 6     //6 = mhdct; 0 = ppm hydro; 3,4 = unsplit MUSCL (4, w/ Dedner)
+CourantSafetyNumber    = 0.3
+NumberOfGhostZones     = 5     //5 for MHDCT, 3 for others
+
+##Other hydro parameters.  Defaults are best.
+##Slope limiter 1, Riemann 6, Reconstruction 0 is equivalent to MHDLi = 0 1 6 1 0, as in Paper08
+#These are probably the best parameters to use.
+#MHDCTSlopeLimiter      = 1  // Minmod  
+#RiemannSolver          = 6  // HLLD
+#ReconstructionMethod   = 0  // PLM 
+
+#Problem definition; less important
+ProblemType                    = 60      // turbulence simulation
+TopGridRank                    = 3       // should match TopGridDimensions at the top.
+DomainLeftEdge                 = 0 0 0
+DomainRightEdge                = 1 1 1
+LeftFaceBoundaryCondition      = 3 3 3   // 3 - periodic for hydro
+RightFaceBoundaryCondition     = 3 3 3
+
+
+# Gravity parameters 
+SelfGravity                    = 0       // gravity on
+GravitationalConstant          = 180     // 4 pi G
+GravityResolution              = 1
+BaryonSelfGravityApproximation = 0
+TopGridGravityBoundary         = 0       // 0 - periodic for gravity (all dims)
+
+
+huge_number            = 1e+6
+tiny_number            = 1e-6
+
+#
+#  set grid refinement parameters
+#
+
+StaticHierarchy = 0
+MaximumRefinementLevel = 0    //0 means no AMR.
+CellFlaggingMethod = 6        //these are very fussy.
+RefineByJeansLengthSafetyFactor = 8
+
+#Tracers work, but only ok.
+#TracerParticlesAddToRestart = 1 
+#TracerParticleOn = 1
+#TracerParticleCreationLeftEdge = 0 0 0 
+#TracerParticleCreationRightEdge= 1 1 1
+#TracerParticleCreationSpacing = 0.0078125
