@@ -1,0 +1,120 @@
+#;-*-C-*-
+ExtraOutputs = 1 2 25 3 4 5 51 6
+
+# AMR PROBLEM DEFINITION FILE: Cosmology Simulation (amr version)
+#
+#  define problem
+#
+ProblemType                = 30      // cosmology simulation
+TopGridRank                = 3
+TopGridDimensions          = 256 256 256
+TopGridGravityBoundary     = 0       // Periodic BC for gravity
+LeftFaceBoundaryCondition  = 3 3 3   // same for fluid
+RightFaceBoundaryCondition = 3 3 3
+SelfGravity                = 1       // gravity on
+PotentialIterations        = 10
+
+#
+#  problem parameters
+#
+CosmologySimulationOmegaBaryonNow        = 0.0461
+CosmologySimulationOmegaCDMNow           = 0.2389
+CosmologySimulationDensityName           = GridDensity
+CosmologySimulationVelocity1Name         = GridVelocities_x
+CosmologySimulationVelocity2Name         = GridVelocities_y
+CosmologySimulationVelocity3Name         = GridVelocities_z
+CosmologySimulationParticleVelocity1Name = ParticleVelocities_x
+CosmologySimulationParticleVelocity2Name = ParticleVelocities_y
+CosmologySimulationParticleVelocity3Name = ParticleVelocities_z
+CosmologySimulationParticleDisplacement1Name = ParticleDisplacements_x
+CosmologySimulationParticleDisplacement2Name = ParticleDisplacements_y
+CosmologySimulationParticleDisplacement3Name = ParticleDisplacements_z
+CosmologySimulationParticleTypeName          = RefinementMask
+CosmologySimulationCalculatePositions    = 1
+CosmologySimulationNumberOfInitialGrids  = 5
+CosmologySimulationGridDimension[1]      =               42               30               38
+CosmologySimulationGridLeftEdge[1]       =        0.4609375       0.47265625       0.46484375
+CosmologySimulationGridRightEdge[1]      =       0.54296875          0.53125        0.5390625
+CosmologySimulationGridLevel[1]          = 1
+CosmologySimulationGridDimension[2]      =               68               42               56
+CosmologySimulationGridLeftEdge[2]       =          0.46875      0.482421875      0.474609375
+CosmologySimulationGridRightEdge[2]      =       0.53515625        0.5234375      0.529296875
+CosmologySimulationGridLevel[2]          = 2
+CosmologySimulationGridDimension[3]      =              118               64               96
+CosmologySimulationGridLeftEdge[3]       =     0.4736328125     0.4873046875      0.478515625
+CosmologySimulationGridRightEdge[3]      =          0.53125     0.5185546875      0.525390625
+CosmologySimulationGridLevel[3]          = 3
+CosmologySimulationGridDimension[4]      =              220              112              174
+CosmologySimulationGridLeftEdge[4]       =     0.4755859375     0.4892578125     0.4809570312
+CosmologySimulationGridRightEdge[4]      =      0.529296875     0.5166015625        0.5234375
+CosmologySimulationGridLevel[4]          = 4
+
+#
+#  define cosmology parameters
+#
+ComovingCoordinates        = 1       // Expansion ON
+CosmologyOmegaMatterNow    = 0.285
+CosmologyOmegaDarkMatterNow = 0.2389
+CosmologyOmegaLambdaNow    = 0.715
+CosmologyHubbleConstantNow = 0.695
+CosmologyComovingBoxSize   = 100    // in Mpc/h = 100 Mpc comoving
+CosmologyMaxExpansionRate  = 0.015   // maximum allowed delta(a)/a
+CosmologyInitialRedshift   = 99
+CosmologyFinalRedshift 	   = 0
+GravitationalConstant      = 1       // this must be true for cosmology
+
+#
+#  set I/O and stop/start parameters
+#
+DataDumpDir      = DD
+DataDumpName     = DD
+dtDataDump 	 = 5.0
+StopCycle        = 100000
+StopCPUTime      = 3600000
+
+#
+#  set hydro parameters
+#
+HydroMethod                     = 6       // PPM
+RiemannSolver                   = 4       // HLLC Use HLLD, below
+Gamma                           = 1.6667
+PPMDiffusionParameter           = 0       // diffusion off
+DualEnergyFormalism             = 1       // use total & internal energy
+InterpolationMethod             = 1       // SecondOrderA
+FluxCorrection                  = 1
+ConservativeInterpolation       = 1
+CourantSafetyNumber             = 0.4
+ParticleCourantSafetyNumber     = 0.5
+
+BAnyl = 1
+NumberOfGhostZones = 5
+MHDCTDualEnergyMethod = 2
+MHDCTSlopeLimiter = 1
+ReimannSolver = 1
+MHD_CT_Method = 1
+CT_AthenaDissipation = 0.1
+
+#
+#  set grid refinement parameters
+#
+StaticHierarchy                = 0    // dynamic hierarchy
+MaximumRefinementLevel         = 8
+MaximumGravityRefinementLevel  = 8
+MaximumParticleRefinementLevel = 8
+RefineBy                       = 2    // refinement factor
+CellFlaggingMethod             = 2 4 8  // use DM mass and must refine particles
+MinimumEfficiency              = 0.4  // fraction efficiency
+MinimumOverDensityForRefinement = 0.0009765625 0.0009765625 // times the initial density refers to top grid: devide by 8 for each additional level
+MinimumMassForRefinementLevelExponent = 0.0 0.0
+MustRefineParticlesCreateParticles = 3
+MustRefineParticlesRefineToLevel   = 4
+
+#
+#  set some global parameters
+#
+GreensFunctionMaxNumber = 30   // # of greens function at any one time
+PartitionNestedGrids = 1
+ParallelRootGridIO   = 1
+ParallelParticleIO   = 1
+UnigridTranspose     = 2
+LoadBalancing        = 4
