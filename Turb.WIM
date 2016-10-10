@@ -5,7 +5,7 @@
 #
 ProblemType                    = 60      // turbulence simulation
 TopGridRank                    = 3
-TopGridDimensions              = 64 64 64
+TopGridDimensions              = 1024 1024 1024
 DomainRightEdge                = 1 1 1
 BAnyl = 1
 #
@@ -48,7 +48,7 @@ StopTime                = 6
 #DataDumpName            = ts_256L0_M6H5_
 CycleSkipGlobalDataDump = -100
 CycleSkipDataDump       = 100
-ParallelRootGridIO = 0
+ParallelRootGridIO = 1
 
 #
 #  set hydro parameters
