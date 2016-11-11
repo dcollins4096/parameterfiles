@@ -5,12 +5,12 @@
 #
 ProblemType                    = 60      // turbulence simulation
 TopGridRank                    = 3
-TopGridDimensions              = 1024 1024 1024
+TopGridDimensions              = 512 512 512
 DomainRightEdge                = 1 1 1
 BAnyl = 1
 #
 SelfGravity                    = 0       // gravity on
-GravitationalConstant          = 180
+GravitationalConstant          = 1620
 GravityResolution              = 1
 BaryonSelfGravityApproximation = 0
 TopGridGravityBoundary         = 0       // 0 - periodic for gravity (all dims)
@@ -32,19 +32,19 @@ TurbulenceSimulationGridRightEdge[0]     = 1 1 1
 TurbulenceSimulationNumberOfInitialGrids = 1
 TurbulenceSimulationInitialTemperature   = 1.0  // sound speed, actually
 TurbulenceSimulationInitialDensity       = 1.0
-TurbulenceSimulationInitialMagneticField = 0.0 0.0 1.8
+#TurbulenceSimulationInitialMagneticField = 0.0 0.0 1.8
 
-RandomForcing                            = 0    
-UseDrivingField        = 1
-RandomForcingMachNumber                  = 0.65
-RandomForcingMethod = 0
+RandomForcing                            = 0 // RandomForcing off and UseDrivingField On still drives. 
+UseDrivingField                          = 1 // But stores the driving field in the BaryonField array.
+RandomForcingMachNumber                  = 9
+RandomForcingMethod                      = 0
 
 #
 #  set I/O and stop/start parameters
 #
 StopCycle               = 100000
-dtDataDump              = 0.015
-StopTime                = 6
+dtDataDump              = 0.0011111111111
+StopTime                = 0.5555555
 #DataDumpName            = ts_256L0_M6H5_
 CycleSkipGlobalDataDump = -100
 CycleSkipDataDump       = 100
@@ -53,7 +53,7 @@ ParallelRootGridIO = 1
 #
 #  set hydro parameters
 #
-Gamma                  = 1.666
+Gamma                  = 1.001
 CourantSafetyNumber    = 0.3
 huge_number            = 1e+6
 tiny_number            = 1e-6
@@ -61,15 +61,15 @@ tiny_number            = 1e-6
 #  set grid refinement parameters
 #
 
-HydroMethod            = 6
-EquationOfState        = 0
+HydroMethod            = 0
+#EquationOfState        = 0
 #Slope limiter 1, Riemann 6, Reconstruction 0 is equivalent to MHDLi = 0 1 6 1 0, as in Paper08
-MHDCTSlopeLimiter      = 1  // Minmod  
-RiemannSolver          = 6  // HLLD
-ReconstructionMethod   = 0  // PLM 
-NumberOfGhostZones     = 5
+#MHDCTSlopeLimiter      = 1  // Minmod  
+#RiemannSolver          = 6  // HLLD
+#ReconstructionMethod   = 0  // PLM 
+#NumberOfGhostZones     = 5
 #MHD_CT_Method = 1
-IsothermalSoundSpeed   = 1.0
+#IsothermalSoundSpeed   = 1.0
 
 #
 # New parameters:
@@ -82,7 +82,7 @@ MaximumRefinementLevel = 0
 CellFlaggingMethod = 6
 RefineByJeansLengthSafetyFactor = 8
 
-TracerParticleOn = 1
-TracerParticleCreationLeftEdge = 0 0 0 
-TracerParticleCreationRightEdge= 1 1 1
-TracerParticleCreationSpacing = 0.0078125
+#TracerParticleOn = 1
+#TracerParticleCreationLeftEdge = 0 0 0 
+#TracerParticleCreationRightEdge= 1 1 1
+#TracerParticleCreationSpacing = 0.0078125
