@@ -1,0 +1,47 @@
+
+TopGridDimensions              = 256 256 256
+ParallelRootGridIO = 0
+
+
+ProblemType                    = 60      // turbulence simulation
+TopGridRank                    = 3
+DomainRightEdge                = 1 1 1
+SelfGravity                    = 0       // gravity on
+GravitationalConstant          = 180
+#
+LeftFaceBoundaryCondition      = 3 3 3   // 3 - periodic for hydro
+RightFaceBoundaryCondition     = 3 3 3
+TurbulenceSimulationInitialTemperature   = 1.0  // sound speed, actually
+TurbulenceSimulationInitialDensity       = 1.0
+TurbulenceSimulationInitialMagneticField = 0.0 0.0 0.0
+
+RandomForcing                            = 0    
+RandomForcingMachNumber                  = 0.3
+#
+#  set I/O and stop/start parameters
+#
+StopCycle               = 100
+#dtDataDump              = 0.0004
+StopTime                = 0.4
+HydroMethod            = 0
+
+#
+#  set hydro parameters
+#
+Gamma                  = 1.666
+CourantSafetyNumber    = 0.3
+
+#
+# New parameters:
+#
+
+
+StaticHierarchy = 0
+MaximumRefinementLevel = 0
+CellFlaggingMethod = 6
+RefineByJeansLengthSafetyFactor = 8
+
+#TracerParticleOn = 1
+#TracerParticleCreationLeftEdge = 0 0 0 
+#TracerParticleCreationRightEdge= 1 1 1
+#TracerParticleCreationSpacing = 0.0078125
