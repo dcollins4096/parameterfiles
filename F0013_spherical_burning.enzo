@@ -1,0 +1,301 @@
+#
+# AMR PROBLEM DEFINITION FILE: 
+# 
+# Dims after Khokhlov
+# EOSType = 0
+# Burning = ON
+# Density discontinuity = 0
+# Pressure discontinuity = 0
+# energu discontinuity = 0
+# No initial gradients
+#
+# compare to 
+# http://www.astro.princeton.edu/~jstone/tests/rt/rt.html
+#  
+#  
+# 
+
+ProblemType                = 500
+TopGridRank                = 3     
+#UserDefinedRootGridLayout  = 1 1 64
+#TopGridDimensions          = 64 64 256
+TopGridDimensions = 256 256 256
+NumberOfGhostZones	   = 5 # HydroMethod 6 requires 5 ghost zones, the rest -- 3
+DomainLeftEdge  = 0 0 0
+DomainRightEdge = 6e6 6e6 6e6
+MHDBlastSubgridLeft = 2e6 2e6 2e6
+MHDBlastSubgridRight = 4e6 4e6 4e6
+#DomainLeftEdge  = -.75e6 -.75e6 -12e6
+#DomainRightEdge = .75e6  .75e6  -6e6
+SelfGravity                = 0
+#0 - reflecting, 1 - outflow, 2 - inflow, 3 - periodic, 4 - shearing
+LeftFaceBoundaryCondition  = 1 1 1
+RightFaceBoundaryCondition = 1 1 1
+#ExtraOutputs = 1
+#
+#  set I/O and stop/start parameters
+#
+StopTime               = 1.0
+dtDataDump             = 3000
+StopCycle		= 5
+
+CycleSkipDataDump	= 3000
+#CycleLastDataDump = -1
+#StopCycle		= 1
+DataDumpName           = data
+
+#################################################
+#
+#  set grid refinement parameters
+#
+StaticHierarchy           = 0 # 0=AMR, 1=no AMR
+FluxCorrection            = 1 # Always 1 with CT MHD
+
+#*** CellFlaggingMethod ****
+#       Possible values:
+#       1	Refine by slope
+#       2	Refine by baryon mass
+#       3	Refine by shocks
+#       4	Refine by particle mass
+#       5	Refine by baryon overdensity
+#       6	Refine by Jeans length
+#       7	Refine if (cooling time < cell width/sound speed)
+#       8	Refine by must-refine particles
+#       9	Refine by shear
+#       10	Refine by optical depth (in RT calculation)
+#       11	Refine by resistive length (in MHD calculation)
+#       12	Refine by defined region “MustRefineRegion”
+#       13	Refine by metallicity
+#       14	Refine by shockwaves (found w/shock finder)
+#       15	Refine by normalized second derivative
+CellFlaggingMethod        = 15
+
+#*** SecondDerivativeFlaggingFields ****
+#       The field indices (list of up to 7) that are used for the normalized 
+#       second derivative refinement criteria. Default: INT_UNDEFINED
+#       For field numbers see .../src/enzo/typedefs.h or Grid_CreateFieldArray.C
+SecondDerivativeFlaggingFields = 97
+
+#*** MinimumSecondDerivativeForRefinement ****
+#       The value of the second derivative above which a cell will be flagged 
+#       for refinement. Each value in this list (of up to 7 values) should be 
+#       between 0.0 and 1.0. Values between 0.3-0.8 are recommended. Default: 0.3
+MinimumSecondDerivativeForRefinement = 5# 0.3
+
+#*** SecondDerivativeEpsilon ****
+#       Used to avoid refining around oscillations/fluctuations in the normalized 
+#       second derivative refinement method. The higher the value, the more it 
+#       will filter out. For fluid instability simulations, a value of ~0.01 is 
+#       good. For full-physics simulations, values around ~0.2 are recommended. 
+#       Be aware that fluctuations on this scale in initial conditions may cause 
+#       immediate refinement to the maximum level. Default: 1.0e-2
+SecondDerivativeEpsilon = 1.0e-2 
+
+#16	#Refine by Jeans length from the inertial tensor
+
+#*** RefineRegionLeftEdge, RefineRegionRightEdge ****
+#       These two parameters control the region in which refinement is permitted. 
+#       Each is a vector of floats (of length given by the problem rank) and they 
+#       specify the two corners of a volume. 
+#       Default: set equal to DomainLeftEdge and DomainRightEdge.
+
+#*** RefineRegionAutoAdjust ****
+#       This is useful for multiresolution simulations with particles in which 
+#       the particles have varying mass. Set to 1 to automatically adjust the 
+#       refine region at root grid timesteps to only contain high-resolution 
+#       particles. This makes sure that the fine regions do not contain more 
+#       massive particles which may lead to small particles orbiting them or 
+#       other undesired outcomes. Setting to any integer (for example, 3) will 
+#       make AdjustRefineRegion to work at (RefineRegionAutoAdjust-1)th level 
+#       timesteps because sometimes the heavy particles are coming into the fine 
+#       regions too fast that you need more frequent protection. 
+#       Default: 0.
+
+#*** RefineRegionTimeType ****
+#       If set, this controls how the first column of a refinement region evolution 
+#       file (see below) is interpreted, 0 for code time, 1 for redshift. 
+#       Default: -1, which is equivalent to ‘off’.
+
+#*** RefineRegionFile ****
+#       The name of a text file containing the corners of the time-evolving refinement 
+#       region. The lines in the file change the values of RefineRegionLeft/RightEdge 
+#       during the course of the simulation, and the lines are ordered in the file 
+#       from early times to late times. The first column of data is the time index 
+#       (in code units or redshift, see the parameter above) for the next six columns, 
+#       which are the values of RefineRegionLeft/RightEdge. For example, this might be 
+#       two lines from the text file when time is indexed by redshift:
+#
+#           0.60 0.530 0.612 0.185 0.591 0.667 0.208
+#           0.55 0.520 0.607 0.181 0.584 0.653 0.201
+#
+#       In this case, the refinement region stays at the z=0.60 value until z=0.55, 
+#       when the box moves slightly closer to the (0,0,0) corner. There is a maximum 
+#       of 300 lines in the file and there is no comment header line. 
+#       Default: None.
+
+#*** StaticRefineRegionLevel[#] ****
+#*** StaticRefineRegionLeftEdge[#] ****
+#*** StaticRefineRegionRightEdge[#] ****
+#       The *StaticRefineRegionLevel* parameter is used to specify regions of the 
+#       problem that are to be statically refined, regardless of other parameters. 
+#       This is mostly used as an internal mechanism to keep the initial grid hierarchy 
+#       in place, but can be specified by the user. Up to 20 static regions may be 
+#       defined (this number set in macros_and_parameters.h), and each static region is 
+#       labeled starting from zero. For each static refined region, two pieces of 
+#       information are required: (1) the region (see the next two parameters), 
+#       and (2) the level at which the refinement is to occurs (0 implies a level 1 
+#       region will always exist). 
+#       Default: none
+#
+#       The *StaticRefineRegionLeftEdge* and *StaticRefineRegionRightEdge* parameters 
+#       specify the two corners of a statically refined region 
+#       Defaults: none
+#
+#       Note: Specify [index] and StaticRefineRegionLevel[index] one less than the 
+#             desired refinement level, i.e. StaticRefineRegionLevel[0]=0 refers
+#             to refinement level 1.
+#StaticRefineRegionLevel[0]=0
+#StaticRefineRegionLeftEdge[0]=-0.25 -0.30
+#StaticRefineRegionRightEdge[0]=0.25 0.30
+#StaticRefineRegionLevel[1]=1
+#StaticRefineRegionLeftEdge[1]=-0.25 -0.15
+#StaticRefineRegionRightEdge[1]=0.25 0.15
+
+MaximumRefinementLevel    = 0
+RefineBy                  = 2
+ParallelRootGridIO        = 1
+ParallelRootGridIO_Force  = 0
+
+#*** NumberOfBufferZones ****
+#       Each flagged cell, during the regridding process, is surrounded by 
+#       a number of zones to prevent the phenomenon of interest from leaving 
+#       the refined region before the next regrid. This integer parameter 
+#       controls the number required, which should almost always be one. 
+#       Default: 1
+NumberOfBufferZones=5
+
+#################################################
+#
+#  set hydro parameters
+#
+Gamma                       = 1.4
+CourantSafetyNumber         = 0.4
+HydroMethod                 = 6
+Initialdt                   = 0.0001
+RKOrder                     = 2
+DualEnergyFormalism         = 0
+Theta_Limiter               = 2.0
+#RiemannSolver               = 4
+UseConstantAcceleration     = 1
+ConstantAcceleration        = 0 0 -1.9e9
+UniformGravity              = 1        # turn on acceleration  (HM=0..2)
+UniformGravityDirection     = 3        # does the same as ConstantAcceleration
+UniformGravityConstant      = -1.9e9   # but for ZEUS and PPM solvers
+
+###############################################################
+#
+# problem parameters for problem type 201
+#
+# Parameter values for MHDTestInitialize
+#LengthUnit = 1.0
+#LowerDensity = 1.0
+#LowerPressure = 2.5
+#LowerVelocityX = 0.0
+#LowerVelocityY = 0.0
+#LowerVelocityZ = 0.0
+#LowerBx = 0.04
+#LowerBy = 0.00
+#
+#UpperDensity = 2.0
+#UpperPressure = 2.5
+#UpperVelocityX = 0.0
+#UpperVelocityY = 0.0
+#UpperVelocityZ = 0.0
+#UpperBx = 0.04
+#UpperBy = 0.00
+
+###############################################################
+#
+# problem parameters for problem type 500
+#
+#       MHDBlastInitStyle  Shape of discontinuity
+#                          0 = sphere: 
+#                          1,2,3=edge to edge slice with a specified thickness along x,y,z 
+#                          40,41,42=cylinder along x,y,z:  
+#                          5,6,7,8 = Index Tests: 10*i + 100*j + 1000*k, i,j,k 
+MHDBlastInitStyle	    = 0 #  Parallel to xy 
+
+#       MHDBlastCenter     "Center" in spatial units 
+#       MHDBlastRadius     "Radius" in space units
+#			   The "center" and the "radius" are interpreted based on the "style":
+#                          MHDBlastInitStyle = 0, radius of sphere
+#                          MHDBlastInitStyle = 1,2,3 the thickness of the slab 
+#                          MHDBlastInitStyle = 40,41,42 the radius of the infinite cylander
+MHDBlastCenter     = 3e6 3e6 3e6  
+MHDBlastRadius     = 1.e6
+
+#       Density, Pressure, Magnetic Field, Velocity can be set with the following.  
+#       For all fields, one side of the discontinuity is denoted A, one is B.
+#
+MHDBlastBA		= 0 0.7071e8 0.7071e8
+MHDBlastBB		= 0 0.7071e8 0.7071e8
+MHDBlastDA		= 1e8
+MHDBlastDB		= 1e8
+#MHDBlastPA		= 1e26
+#MHDBlastPB		= 1e26
+MHDBlastVelocityA	= 0 0 0
+MHDBlastVelocityB	= 0 0 0
+Rho_56Ni_InitialA       = 0
+Rho_56Ni_InitialB       = 1e8
+InternalEnergy_InitialA = 4.065573e17
+InternalEnergy_InitialB = 3.3e18
+
+#MHDBlastGasEnergyA	= 0
+#MHDBlastGasEnergyB	= 0
+#MHDBlastTotalEnergyA	= 0
+#MHDBlastTotalEnergyB	= 0
+
+MHDBlastRefineOnStartup = 1
+#MHDBlastSubgridLeft  = %"PSYM" %"PSYM" %"PSYM,
+#MHDBlastSubgridRight = %"PSYM" %"PSYM" %"PSYM,
+
+#       MHDBlastPerturbMethod							//[BH]
+#		33: Perturb the interface in x, y or z direction fori		//[BH]
+#			MHDBlastInitStyle = 1, 2 or 3 correspondingly.		//[BH]
+#		4: Vx = pa(cos(2*pi*y/ply) + cos(2*pi*z/plz))			//[BH]
+#		5: Vy = pa(cos(2*pi*x/plx) + cos(2*pi*z/plz))			//[BH]
+#		6: Vz = pa(cos(2*pi*x/plx) + cos(2*pi*y/ply))			//[BH]
+#	where									//[BH]
+#		pa = MHDBlastPerturbAmplitude					//[BH]
+#		{plx, ply, plz} = MHDBlastPerturbWavelength			//[BH]
+MHDBlastPerturbMethod	  = 33   # 6=Perturb velocity along z (Perturb wavelength in km)	//[BH]
+MHDBlastPerturbAmplitude  = .5e5 # cm/s (for velocity, perturb methods 4,5,6)	//[BH]
+#MHDBlastPerturbWavelength = 4.8e5 4.8e5 48e5 # 1 wave (3 peaks)		//[BH]
+MHDBlastPerturbWavelength = 4.8e5 4.8e5 0 #4.8e5 48e5 # 1 wave (3 peaks)		//[BH]
+#MHDBlastPerturbAmplitude  = .1 # cells (for perturb method 3)			//[BH]
+#MHDBlastPerturbWavelength = .5 .5 1.5 #1.5e6 1.5e6 12e6 # 1 waves (1 peak)		//[BH]
+
+IsotropicConduction = 0
+AnisotropicConduction = 0
+
+#UseBurning                            = 1 #[BH]
+#AllowUnburning           		= 1   #[BH]
+CallSetBoundaryConditionsAfterBurning = 1     #[BH]
+BurningDiffusionCourantSafetyFactor   = 0.5   #[BH]
+BurningDiffusionRate                  = 1e10 #[BH]
+BurningReactionRate                   = 1e2   #[BH]
+BurningReactionBurnedFractionLimitLo  = 0.3   #[BH]
+BurningReactionBurnedFractionLimitHi  = 2     #[BH]
+BurningEnergyRelease                  = 7.655730630E+17 # Q := erg/g = 0.0476929 amu * Ni count [BH]
+#BurningEnergyRelease                 = 1.367094755e+16 # := Q/56 [BH]
+#BurningEnergyRelease                 = 7.655730630E+15 # := Q/100 [BH]
+#BurningEnergyRelease                 = 1.367094755e+14 # := Q/56/100 [BH]
+#BurningEnergyRelease                 = 1.37e+08 # := Q/56/100/more - worked for perturb method=6 [BH]
+#BurningEnergyRelease                 = 1.37e+12 # := Q/56/100/more - perturb method=3 [BH]
+
+#EOSType             = 0 # P = (gamma - 1) * gasE * rho
+#EOSType             = 8 # Polytropic, Gamma = 4/3 [BH]
+#EOSPolytropicFactor = 4.883e14 # [BH]
+
+EnergyRelativeGrowthLimit = 0.1 #[BH]
+#Debug1 = 1
